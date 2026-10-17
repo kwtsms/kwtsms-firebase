@@ -652,10 +652,15 @@ describe('Phase L: Static Analysis', () => {
       './src/handlers/otp.ts', './src/handlers/callable.ts', './src/handlers/auth.ts',
       './src/services/sms.ts', './src/services/otp.ts',
     ];
+    // 2026-10-18 01:10 +03: the strings to guard against come from the PRIVATE_STRINGS env var
+    // (comma-separated) so this public file no longer contains them; unset = check skipped (task 344).
+    const privateStrings = (process.env.PRIVATE_STRINGS || '').split(',').map((s) => s.trim()).filter(Boolean);
+    if (privateStrings.length === 0) console.warn('L-5: PRIVATE_STRINGS not set, check skipped');
     for (const f of files) {
       const content = readFileSync(f, 'utf-8');
-      assert.ok(!content.includes('99220322'), `real phone in ${f}`);
-      assert.ok(!content.includes('96599220322'), `real phone in ${f}`);
+      for (const s of privateStrings) {
+        assert.ok(!content.includes(s), `private string in ${f}`);
+      }
     }
   });
 });

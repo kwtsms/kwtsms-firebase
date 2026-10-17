@@ -2,7 +2,8 @@
 
 ## Reporting a Vulnerability
 
-To report a security vulnerability, please email: support@kwtsms.com
+To report a security vulnerability, contact kwtSMS support: https://www.kwtsms.com/support.html
+<!-- 2026-10-18 01:10 +03: direct contact replaced with the support page link (task 344). -->
 
 Do not open a public GitHub issue for security vulnerabilities.
 

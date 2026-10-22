@@ -7,10 +7,11 @@ import { bindToggles } from '../components/toggle';
 import { SETTINGS_DEFAULTS } from '../types';
 import type { Settings, SyncData } from '../types';
 
+// 2026-10-22 15:35 +03: banner text corrected. Test messages hold credits until deleted from the Sending Queue.
 function warningBanner(): string {
   return `<div class="warning-banner" id="test-warning">
     <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    <div><strong>Test mode is active.</strong> SMS messages are sent to the API but not delivered. No credits are permanently consumed.</div>
+    <div><strong>Test mode is active.</strong> Messages are queued but not delivered. Credits are held until you delete them from the Sending Queue.</div>
   </div>`;
 }
 

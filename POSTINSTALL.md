@@ -11,7 +11,7 @@ The extension created a `sms_config/settings` document in Firestore with these d
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `gateway_enabled` | `true` | Global on/off switch |
-| `test_mode` | `true` | SMS sent with test=1 (no delivery, no credits) |
+| `test_mode` | `true` | SMS sent with test=1: queued, not delivered. Credits are held until you delete the test messages from the Sending Queue |
 | `debug_logging` | `false` | Verbose Cloud Functions logs |
 | `default_country_code` | `965` | Prepended to numbers without country code |
 | `selected_sender_id` | `KWT-SMS` | Active sender ID |

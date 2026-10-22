@@ -66,7 +66,7 @@ Install this extension in your Firebase project to send SMS through kwtSMS. Writ
 - Multilingual templates with `{{placeholder}}` support (English and Arabic)
 - Phone number normalization: strips prefixes, converts Arabic digits, prepends country codes
 - Configurable sender ID and default country code from synced API data
-- Global gateway on/off switch and test mode (no delivery, no credits consumed)
+- Global gateway on/off switch and test mode (queued, not delivered; credits are held until you delete the test messages from the Sending Queue)
 - Firestore audit logs + Cloud Functions debug logging
 - Settings cache with 5s TTL to reduce Firestore reads
 
@@ -145,7 +145,7 @@ The extension creates a `sms_config/settings` document in Firestore with these d
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `gateway_enabled` | `true` | Global on/off switch for all SMS sending |
-| `test_mode` | `true` | Sends with test=1, no delivery, no credits consumed |
+| `test_mode` | `true` | Sends with test=1: queued, not delivered. Credits are held until you delete the test messages from the Sending Queue in your kwtsms.com account |
 | `debug_logging` | `false` | Enables verbose Cloud Functions logs |
 | `default_country_code` | `965` | Prepended to numbers without a country code |
 | `selected_sender_id` | `KWT-SMS` | Active sender ID from your kwtSMS account |

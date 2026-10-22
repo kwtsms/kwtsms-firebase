@@ -99,6 +99,7 @@ console.<span class="func">log</span>(result.data); <span class="comment">// { s
     icon: 'orange',
     iconSvg: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
     title: 'Troubleshooting',
+    // 2026-10-22 15:35 +03: ERR028 row corrected below. Duplicate SMS protection is opt-in per account with its own window, never a fixed 15 s.
     desc: 'Common issues and solutions',
     body: `<h4>SMS not sending</h4>
       <ul>
@@ -124,7 +125,7 @@ console.<span class="func">log</span>(result.data); <span class="comment">// { s
         <tr><td><code>ERR006</code></td><td>No valid numbers</td><td>Check phone number format includes country code</td></tr>
         <tr><td><code>ERR009</code></td><td>Empty message</td><td>Provide message text or valid template</td></tr>
         <tr><td><code>ERR010</code></td><td>Zero balance</td><td>Recharge at kwtsms.com</td></tr>
-        <tr><td><code>ERR028</code></td><td>15s cooldown</td><td>Wait 15 seconds before sending to same number</td></tr>
+        <tr><td><code>ERR028</code></td><td>Sent to the same number too soon.</td><td>Duplicate SMS protection is on for this account (opt-in): the whole request was rejected and nothing was charged. Wait for the account's window (10 seconds by default) before resending.</td></tr>
       </tbody></table>`,
   },
 ];

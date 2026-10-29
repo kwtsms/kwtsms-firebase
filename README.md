@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/boxlinknet/kwtsms-firebase/releases"><img src="https://img.shields.io/github/v/release/boxlinknet/kwtsms-firebase?label=version&color=FFA200" alt="Version"></a>
-  <a href="https://github.com/boxlinknet/kwtsms-firebase/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License"></a>
+  <a href="https://github.com/kwtsms/kwtsms-firebase/releases"><img src="https://img.shields.io/github/v/release/kwtsms/kwtsms-firebase?label=version&color=FFA200" alt="Version"></a>
+  <a href="https://github.com/kwtsms/kwtsms-firebase/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License"></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.4-3178C6?logo=typescript&logoColor=white" alt="TypeScript"></a>
   <a href="https://firebase.google.com/docs/extensions"><img src="https://img.shields.io/badge/Firebase-Extension-FFCA28?logo=firebase&logoColor=black" alt="Firebase Extension"></a>
   <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white" alt="Node.js"></a>
@@ -84,7 +84,7 @@ Install this extension in your Firebase project to send SMS through kwtSMS. Writ
 **From GitHub (recommended):**
 
 ```bash
-firebase ext:install https://github.com/boxlinknet/kwtsms-firebase --project=YOUR_PROJECT
+firebase ext:install https://github.com/kwtsms/kwtsms-firebase --project=YOUR_PROJECT
 ```
 
 **From Firebase Extensions Hub** (when available):
@@ -96,7 +96,7 @@ firebase ext:install kwtsms/kwtsms-firebase --project=YOUR_PROJECT
 **From local source:**
 
 ```bash
-git clone https://github.com/boxlinknet/kwtsms-firebase.git
+git clone https://github.com/kwtsms/kwtsms-firebase.git
 cd kwtsms-firebase/functions && npm install && npx tsc && cd ..
 firebase ext:install . --project=YOUR_PROJECT
 ```
@@ -275,13 +275,13 @@ System templates can't be deleted but their body text can be changed and reverte
 ## Documentation
 
 - [kwtSMS API docs](https://www.kwtsms.com/integrations.html)
-- [kwtSMS JS client library](https://github.com/boxlinknet/kwtsms-js)
+- [kwtSMS JS client library](https://github.com/kwtsms/kwtsms-js)
 - [Firebase Extensions docs](https://firebase.google.com/docs/extensions)
 
 ## Support
 
 - kwtSMS support: [kwtsms.com/support.html](https://www.kwtsms.com/support.html)
-- Issues: [github.com/boxlinknet/kwtsms-firebase/issues](https://github.com/boxlinknet/kwtsms-firebase/issues)
+- Issues: [github.com/kwtsms/kwtsms-firebase/issues](https://github.com/kwtsms/kwtsms-firebase/issues)
 
 ## License
 

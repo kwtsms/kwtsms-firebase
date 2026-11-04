@@ -147,7 +147,7 @@ export function renderHelp(container: HTMLElement): void {
     &nbsp;&middot;&nbsp;
     <a class="link" href="https://www.kwtsms.com/support.html" target="_blank">kwtSMS Support</a>
     &nbsp;&middot;&nbsp;
-    <a class="link" href="https://github.com/boxlinknet/kwtsms-firebase" target="_blank">GitHub</a>
+    <a class="link" href="https://github.com/kwtsms/kwtsms-firebase" target="_blank">GitHub</a>
   </div>`;
 
   container.innerHTML = renderHeader('Help', linkHtml) + `<div class="content" style="max-width:800px;">${sectionsHtml}${footerLinks}</div>`;

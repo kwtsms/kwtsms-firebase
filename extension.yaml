@@ -18,7 +18,7 @@ author:
   authorName: kwtSMS
   url: https://www.kwtsms.com
 
-sourceUrl: https://github.com/boxlinknet/kwtsms-firebase
+sourceUrl: https://github.com/kwtsms/kwtsms-firebase
 
 billingRequired: true
 

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Requests to kwtSMS carry the integration name and version (no personal data) so kwtSMS can see which integrations are in use.
+
 ### Changed
 - Docs, dashboard help and code examples use the placeholder 965XXXXXXXX instead of a sample mobile number; tests that need a real Kuwait number or send to the API (test=1) read it from the KWTSMS_TEST_NUMBER environment variable and skip when it is unset
 

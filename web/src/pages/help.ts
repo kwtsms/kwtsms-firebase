@@ -7,6 +7,7 @@ function codeBlock(code: string): string {
   return `<div class="code-block">${code}</div>`;
 }
 
+// 2026-11-05 10:04 +03: code examples use the 965XXXXXXXX placeholder instead of a sample mobile that belonged to a real person, int-testnumber
 const SECTIONS = [
   {
     icon: 'orange',
@@ -16,12 +17,12 @@ const SECTIONS = [
     body: `<p>Create a document in the <code>sms_queue</code> collection. The extension picks it up and sends the SMS automatically.</p>
       <h4>Inline message</h4>
       ${codeBlock(`<span class="keyword">await</span> db.<span class="func">collection</span>(<span class="string">'sms_queue'</span>).<span class="func">add</span>({
-  <span class="key">to</span>: <span class="string">'96598765432'</span>,
+  <span class="key">to</span>: <span class="string">'965XXXXXXXX'</span>,
   <span class="key">message</span>: <span class="string">'Your order has been shipped!'</span>,
 });`)}
       <h4>Using a template</h4>
       ${codeBlock(`<span class="keyword">await</span> db.<span class="func">collection</span>(<span class="string">'sms_queue'</span>).<span class="func">add</span>({
-  <span class="key">to</span>: <span class="string">'96598765432'</span>,
+  <span class="key">to</span>: <span class="string">'965XXXXXXXX'</span>,
   <span class="key">template</span>: <span class="string">'order_confirmed'</span>,
   <span class="key">templateData</span>: { <span class="key">customer_name</span>: <span class="string">'Ahmad'</span>, <span class="key">order_id</span>: <span class="string">'ORD-123'</span> },
   <span class="key">language</span>: <span class="string">'ar'</span>,
@@ -49,7 +50,7 @@ const SECTIONS = [
 
 <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="func">sendSms</span>({
   <span class="key">action</span>: <span class="string">'send'</span>,
-  <span class="key">to</span>: <span class="string">'96598765432'</span>,
+  <span class="key">to</span>: <span class="string">'965XXXXXXXX'</span>,
   <span class="key">message</span>: <span class="string">'Your delivery is arriving in 10 minutes'</span>,
 });
 console.<span class="func">log</span>(result.data); <span class="comment">// { success: true, msgId: "f4c841..." }</span>`)}
@@ -62,12 +63,12 @@ console.<span class="func">log</span>(result.data); <span class="comment">// { s
     desc: 'Send and verify one-time passwords via SMS',
     body: `<h4>Send OTP</h4>
       ${codeBlock(`<span class="keyword">const</span> handleOtp = <span class="func">httpsCallable</span>(functions, <span class="string">'ext-kwtsms-firebase-handleOtp'</span>);
-<span class="keyword">await</span> <span class="func">handleOtp</span>({ <span class="key">action</span>: <span class="string">'sendOtp'</span>, <span class="key">phone</span>: <span class="string">'96598765432'</span> });
+<span class="keyword">await</span> <span class="func">handleOtp</span>({ <span class="key">action</span>: <span class="string">'sendOtp'</span>, <span class="key">phone</span>: <span class="string">'965XXXXXXXX'</span> });
 <span class="comment">// { success: true, expiresIn: 300 }</span>`)}
       <h4>Verify OTP</h4>
       ${codeBlock(`<span class="keyword">const</span> result = <span class="keyword">await</span> <span class="func">handleOtp</span>({
   <span class="key">action</span>: <span class="string">'verifyOtp'</span>,
-  <span class="key">phone</span>: <span class="string">'96598765432'</span>,
+  <span class="key">phone</span>: <span class="string">'965XXXXXXXX'</span>,
   <span class="key">code</span>: <span class="string">'483921'</span>,
 });
 <span class="comment">// { success: true } or { success: false, error: "Verification failed" }</span>`)}

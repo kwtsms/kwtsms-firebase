@@ -88,10 +88,11 @@ function renderContent(settings: Settings, sync: SyncData | null): string {
     <div class="card" style="margin-top:20px;">
       <div class="card-header"><div><h3>Send Test SMS</h3><p>Send a test message using current settings${settings.test_mode ? ' (test mode ON, no delivery)' : ' (LIVE mode, credits will be consumed)'}</p></div></div>
       <div class="card-body" style="padding:16px 20px;">
+        <!-- 2026-11-05 10:04 +03: 965XXXXXXXX placeholder replaces a sample mobile that belonged to a real person, int-testnumber -->
         <div class="setting-row">
           <div class="setting-info"><div class="setting-label">Phone Numbers</div>
-            <div class="setting-desc">Comma-separated, include country code (e.g. 96598765432, 96612345678)</div></div>
-          <div class="setting-control"><input class="input" type="text" id="test-phone" placeholder="96598765432, 96612345678" style="min-width:340px;padding:12px 14px;font-size:15px;" /></div>
+            <div class="setting-desc">Comma-separated, include country code (e.g. 965XXXXXXXX, 96612345678)</div></div>
+          <div class="setting-control"><input class="input" type="text" id="test-phone" placeholder="965XXXXXXXX, 96612345678" style="min-width:340px;padding:12px 14px;font-size:15px;" /></div>
         </div>
         <div class="setting-row">
           <div class="setting-info"><div class="setting-label">Message</div>

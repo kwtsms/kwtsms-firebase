@@ -4,6 +4,9 @@ import { db, seedSettings, seedSync, cleanUp } from './setup';
 import { buildSendPipeline } from '../src/services/sms';
 import { runSync } from '../src/handlers/scheduled';
 import { getSettings, getSyncData, clearConfigCache } from '../src/config';
+// 2026-11-05 10:03 +03: live sends (test=1) go only to KWTSMS_TEST_NUMBER and skip when it is
+// unset; sample mobiles here belonged to real people, int-testnumber
+import { PLACEHOLDER, requireNumber, variants } from './helpers/test-number';
 
 describe('Integration Tests (real kwtSMS API, test=1)', () => {
   before(async () => {
@@ -36,12 +39,15 @@ describe('Integration Tests (real kwtSMS API, test=1)', () => {
   });
 
   describe('SMS Send Pipeline (real API, test=1)', () => {
-    it('sends SMS with inline message in test mode', async () => {
+    it('sends SMS with inline message in test mode', async (t) => {
+      // 2026-11-05 10:03 +03: env test number instead of a hard-coded mobile, int-testnumber
+      const to = requireNumber(t);
+      if (!to) return;
       const settings = await getSettings();
       const syncData = await getSyncData();
 
       const result = await buildSendPipeline({
-        to: '96598765432',
+        to,
         message: 'Integration test message from kwtsms-firebase',
         settings,
         syncData,
@@ -52,7 +58,10 @@ describe('Integration Tests (real kwtSMS API, test=1)', () => {
       assert.ok(result.response, 'Should have API response');
     });
 
-    it('sends SMS with template', async () => {
+    it('sends SMS with template', async (t) => {
+      // 2026-11-05 10:03 +03: env test number instead of a hard-coded mobile, int-testnumber
+      const to = requireNumber(t);
+      if (!to) return;
       // Seed a template first
       await db.collection('sms_templates').doc('order_confirmed').set({
         name: 'order_confirmed',
@@ -70,7 +79,7 @@ describe('Integration Tests (real kwtSMS API, test=1)', () => {
       const syncData = await getSyncData();
 
       const result = await buildSendPipeline({
-        to: '96598765432',
+        to,
         template: 'order_confirmed',
         templateData: { customer_name: 'Test User', order_id: 'ORD-TEST-001' },
         language: 'en',
@@ -89,7 +98,8 @@ describe('Integration Tests (real kwtSMS API, test=1)', () => {
       settings.gateway_enabled = false;
 
       const result = await buildSendPipeline({
-        to: '96598765432',
+        // 2026-11-05 10:03 +03: pass-through only (gateway off, never sent), placeholder, int-testnumber
+        to: PLACEHOLDER,
         message: 'Should not send',
         settings,
         syncData: null,
@@ -100,14 +110,18 @@ describe('Integration Tests (real kwtSMS API, test=1)', () => {
       assert.strictEqual(result.error, 'Gateway is disabled');
     });
 
-    it('prepends country code to local number', async () => {
+    it('prepends country code to local number', async (t) => {
+      // 2026-11-05 10:03 +03: this test sent live to a hard-coded Saudi mobile; it now sends the
+      // local part of KWTSMS_TEST_NUMBER with default code 965, the only allowed live target, int-testnumber
+      const n = requireNumber(t);
+      if (!n) return;
       clearConfigCache();
       const settings = await getSettings();
-      settings.default_country_code = '966';
+      settings.default_country_code = '965';
       const syncData = await getSyncData();
 
       const result = await buildSendPipeline({
-        to: '587469874',
+        to: variants(n).local,
         message: 'Test prepend country code',
         settings,
         syncData,

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Docs, dashboard help and code examples use the placeholder 965XXXXXXXX instead of a sample mobile number; tests that need a real Kuwait number or send to the API (test=1) read it from the KWTSMS_TEST_NUMBER environment variable and skip when it is unset
+
 ### Docs
 - Test mode: test messages are queued but not delivered; their credits are held until you delete them from the Sending Queue (previously described as consuming no credits)
 - ERR028 help row: "Sent to the same number too soon." Duplicate SMS protection is opt-in per account with a configurable window (10 seconds by default), not a fixed 15 seconds

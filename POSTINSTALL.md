@@ -27,7 +27,7 @@ import { getFirestore } from 'firebase/firestore';
 
 const db = getFirestore();
 await db.collection('${param:SMS_COLLECTION}').add({
-  to: '96598765432',
+  to: '965XXXXXXXX',
   message: 'Hello from kwtSMS!',
 });
 ```
@@ -38,7 +38,7 @@ Reference a template by name instead of providing message text:
 
 ```javascript
 await db.collection('${param:SMS_COLLECTION}').add({
-  to: '96598765432',
+  to: '965XXXXXXXX',
   template: 'order_confirmed',
   templateData: {
     customer_name: 'Ahmad',
@@ -59,10 +59,10 @@ const functions = getFunctions();
 const handleOtp = httpsCallable(functions, 'ext-${param:EXT_INSTANCE_ID}-handleOtp');
 
 // Send OTP
-await handleOtp({ action: 'sendOtp', phone: '96598765432' });
+await handleOtp({ action: 'sendOtp', phone: '965XXXXXXXX' });
 
 // Verify OTP
-const result = await handleOtp({ action: 'verifyOtp', phone: '96598765432', code: '123456' });
+const result = await handleOtp({ action: 'verifyOtp', phone: '965XXXXXXXX', code: '123456' });
 ```
 
 ### Monitoring

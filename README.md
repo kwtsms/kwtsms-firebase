@@ -166,13 +166,13 @@ const db = getFirestore();
 
 // Send with inline message
 await addDoc(collection(db, 'sms_queue'), {
-  to: '96598765432',
+  to: '965XXXXXXXX',
   message: 'Your order has been confirmed.',
 });
 
 // Send with template (Arabic)
 await addDoc(collection(db, 'sms_queue'), {
-  to: '96598765432',
+  to: '965XXXXXXXX',
   template: 'order_confirmed',
   templateData: { customer_name: 'Ahmad', order_id: 'ORD-123' },
   language: 'ar',
@@ -180,7 +180,7 @@ await addDoc(collection(db, 'sms_queue'), {
 
 // Send to multiple recipients
 await addDoc(collection(db, 'sms_queue'), {
-  to: '96598765432, 96612345678',
+  to: '965XXXXXXXX, 96612345678',
   message: 'Flash sale starts now!',
 });
 ```
@@ -206,7 +206,7 @@ const sendSms = httpsCallable(functions, 'ext-kwtsms-firebase-sendSms');
 
 const result = await sendSms({
   action: 'send',
-  to: '96598765432',
+  to: '965XXXXXXXX',
   template: 'order_shipped',
   templateData: { customer_name: 'Ahmad', order_id: 'ORD-123' },
   language: 'en',
@@ -222,13 +222,13 @@ Requires Firebase Auth. Rate limited to 10 requests per minute per user.
 const handleOtp = httpsCallable(functions, 'ext-kwtsms-firebase-handleOtp');
 
 // Generate and send OTP
-await handleOtp({ action: 'sendOtp', phone: '96598765432' });
+await handleOtp({ action: 'sendOtp', phone: '965XXXXXXXX' });
 // { success: true, expiresIn: 300 }
 
 // Verify OTP code
 const result = await handleOtp({
   action: 'verifyOtp',
-  phone: '96598765432',
+  phone: '965XXXXXXXX',
   code: '123456',
 });
 // { success: true } or { success: false, error: 'Verification failed' }

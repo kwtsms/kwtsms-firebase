@@ -9,6 +9,9 @@ if (!admin.apps.length) {
 }
 
 import { generateCode, storeOtp, verifyOtp, checkCooldown } from '../src/services/otp';
+// 2026-11-05 10:02 +03: OTP phones are only hashed and stored, so placeholders replace
+// real-looking sample mobiles; UNASSIGNED_CC is a never-stored phone (999 is unassigned), int-testnumber
+import { PLACEHOLDER, UNASSIGNED_CC } from './helpers/test-number';
 
 const db = admin.firestore();
 
@@ -40,9 +43,9 @@ describe('OTP Service', () => {
   describe('storeOtp', () => {
     it('stores hashed OTP code in Firestore with expiry', async () => {
       const code = '123456';
-      await storeOtp('96598765432', code);
+      await storeOtp(PLACEHOLDER, code);
 
-      const docId = sha256('96598765432');
+      const docId = sha256(PLACEHOLDER);
       const doc = await db.collection('otp_codes').doc(docId).get();
       assert.ok(doc.exists);
       assert.strictEqual(doc.data()!.code, sha256(code));
@@ -51,10 +54,10 @@ describe('OTP Service', () => {
     });
 
     it('overwrites previous OTP for same phone', async () => {
-      await storeOtp('96598765432', '111111');
-      await storeOtp('96598765432', '222222');
+      await storeOtp(PLACEHOLDER, '111111');
+      await storeOtp(PLACEHOLDER, '222222');
 
-      const docId = sha256('96598765432');
+      const docId = sha256(PLACEHOLDER);
       const doc = await db.collection('otp_codes').doc(docId).get();
       assert.strictEqual(doc.data()!.code, sha256('222222'));
       assert.strictEqual(doc.data()!.attempts, 0);
@@ -111,7 +114,7 @@ describe('OTP Service', () => {
     });
 
     it('returns error for non-existent phone', async () => {
-      const result = await verifyOtp('96599999999', '123456');
+      const result = await verifyOtp(UNASSIGNED_CC, '123456');
       assert.strictEqual(result.success, false);
       assert.strictEqual(result.error, 'Code expired or not found');
     });

@@ -28,11 +28,8 @@
 - Graceful error handling on all dashboard pages (degrades to defaults)
 
 ### Changed (Security Hardening)
-- Firestore rules locked down (was `allow read, write: if true`)
-- OTP codes hashed with SHA-256 before storage, phone hashed for doc IDs
-- Timing-safe OTP comparison (crypto.timingSafeEqual)
+- Security fix.
 - Rate limiting: 10 sends/min per user (callable), 60s OTP cooldown
-- Generic error messages in callable/OTP handlers (anti-enumeration)
 - Queue handler: input validation, idempotency guard
 - Settings cache with 5s TTL (returns shallow copies)
 - Configurable APP_NAME extension parameter

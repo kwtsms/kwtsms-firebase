@@ -3,60 +3,30 @@
 ## [Unreleased]
 
 ### Added
-- Requests to kwtSMS carry the integration name and version (no personal data) so kwtSMS can see which integrations are in use.
-
-### Changed
-- Docs, dashboard help and code examples use the placeholder 965XXXXXXXX instead of a sample mobile number; tests that need a real Kuwait number or send to the API (test=1) read it from the KWTSMS_TEST_NUMBER environment variable and skip when it is unset
-
-### Docs
-- Test mode: test messages are queued but not delivered; their credits are held until you delete them from the Sending Queue (previously described as consuming no credits)
-- ERR028 help row: "Sent to the same number too soon." Duplicate SMS protection is opt-in per account with a configurable window (10 seconds by default), not a fixed 15 seconds
+- Integration name and version sent with requests.
 
 ## [1.0.0] - 2026-04-09
 
 ### Added
-- **Dashboard SPA** (Phase 2): Vite + TypeScript admin panel with 5 pages
-  - Dashboard: stat cards (balance, sent today, test mode, gateway status), recent activity, current settings display
-  - Settings: gateway toggles, sender ID dropdown, app name, country code, save/discard
-  - Templates: list all templates EN/AR, edit modal with language tabs, create/delete custom templates
-  - SMS Logs: filters (type, trigger, status, date range), expandable rows, pagination, CSV export
-  - Help: code examples, template variables reference, troubleshooting, error codes
-  - Send Test SMS form on settings page (follows system test_mode)
-- Firebase Auth login with admin custom claim for dashboard access
-- Firestore rules updated with `isAdmin()` helper for dashboard read/write
-- Emulator support for local development (`?dev` URL param bypasses auth)
-- Graceful error handling on all dashboard pages (degrades to defaults)
+- Admin dashboard: stats, settings, templates, SMS logs and help.
+- Send test SMS form.
+- Firebase Auth login for dashboard access.
+- Emulator support for local development.
 
-### Changed (Security Hardening)
-- Security fix.
-- Rate limiting: 10 sends/min per user (callable), 60s OTP cooldown
-- Queue handler: input validation, idempotency guard
-- Settings cache with 5s TTL (returns shallow copies)
-- Configurable APP_NAME extension parameter
-- Balance check changed from hard block to warning
-- Removed balanceAfter from callable response (admin-only data)
-
-### Testing
-- 93 tests total: unit + emulator + E2E + integration (real API, test=1)
-- E2E security tests: XSS, SQL injection, path traversal, phone injection, enumeration
-- Edge cases: emoji, unicode, Arabic digits, RTL markers
+### Changed
+- Bug fixes.
+- Configurable app name.
+- Balance check is now a warning.
 
 ## [0.1.0] - 2026-03-27
 
 ### Added
-- Firestore queue trigger for SMS sending
-- Auth trigger for welcome SMS on new user signup
-- HTTPS callable for on-demand SMS
-- OTP generation and verification callable with enumeration protection
-- Scheduled daily sync (balance, sender IDs, coverage)
-- Install lifecycle: seeds settings, 8 multilingual templates, runs first sync
-- Multilingual template system (English, Arabic) with `{{placeholder}}` replacement
-- Phone normalization with country code prepend
-- Firestore audit logging + Cloud Functions debug logging
-- Test mode on by default (kwtSMS test=1)
-- 33 tests: unit + integration with real kwtSMS API
+- Firestore queue trigger, welcome SMS on signup and on-demand SMS.
+- OTP generation and verification.
+- Scheduled daily sync.
+- English and Arabic templates.
+- Test mode on by default.
 
 ### Changed
-- Runtime upgraded from nodejs18 to nodejs20
-- Added LICENSE (Apache 2.0), icon.png, externalServices, tags to extension manifest
-- Three install methods: GitHub, Extensions Hub, local source
+- Runtime upgraded to nodejs20.
+- Extension manifest updated.

@@ -1,0 +1,51 @@
+{
+  "name": "kwtsms-firebase-kit",
+  "version": "0.1.0-rc.0",
+  "description": "kwtSMS function kit for Firebase: SMS queue, Auth welcome SMS, callable SMS, OTP verification and daily sync via the kwtSMS gateway",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kwtsms/kwtsms-firebase.git",
+    "directory": "kit"
+  },
+  "homepage": "https://www.kwtsms.com",
+  "keywords": ["firebase", "functions", "sms", "kwtsms", "otp", "kit"],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "engines": {
+    "node": "22"
+  },
+  "files": ["lib", "!lib/**/*.map", "README.md", "CHANGELOG.md", "LICENSE"],
+  "publishConfig": { "access": "public", "tag": "next" },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf lib/",
+    "lint": "eslint src/ tests/",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && tsx --test tests/*.test.ts",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "peerDependencies": {
+    "firebase-functions": "^7.4.0"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.2.0",
+    "firebase-functions": "^7.4.0",
+    "kwtsms": "^0.5.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "firebase-functions-test": "^3.4.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.4.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}

@@ -45,3 +45,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# 2026-11-16 02:05 +03: function kit (kit/): keep its tests, ignore its build and deps, int-firebase-auth
+!kit/tests/
+kit/lib/
+kit/node_modules/
+kit/package-lock.json

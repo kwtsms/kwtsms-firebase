@@ -27,6 +27,17 @@
 - Client libraries: PHP, Python, JavaScript, Ruby, Go, Java, C#, Swift, Kotlin, Rust, Dart, Zig
 - Sender ID registration, transactional and promotional routing, real-time balance and coverage APIs
 
+<!-- 2026-11-16 02:05 +03: PREPARED, NOT ACTIVE (int-firebase-auth). Activating this is a public announcement and needs approval after the npm package is published. To activate: replace this whole comment with the marker comment and the warning block below (Google's step 13 format).
+PREPARED, NOT ACTIVE: wrap the next line in an HTML comment opener and closer when activating:
+FIREBASE_EXTENSION_REPLACEMENT: extension="kwtsms-firebase" package="kwtsms-firebase-kit"
+> [!WARNING]
+> **Deprecation Notice:** The Firebase Extension `kwtsms-firebase` is deprecated. Migrate to the [kwtsms-firebase-kit](https://www.npmjs.com/package/kwtsms-firebase-kit) package.
+-->
+
+## Function kit (replaces the extension)
+
+Firebase Extensions shut down on 2027-03-31. The same functions are available as an npm function kit, [`kwtsms-firebase-kit`](kit/README.md) (in the `kit/` folder). The extension in this repo keeps working until the shutdown. Migrate with `firebase ext:migrate --package kwtsms-firebase-kit`; see [kit/README.md](kit/README.md).
+
 ## What this extension does
 
 Install this extension in your Firebase project to send SMS through kwtSMS. Write a document to Firestore and the extension sends it as SMS automatically. No server setup, no SMS infrastructure to manage.

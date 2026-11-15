@@ -51,3 +51,4 @@ Thumbs.db
 kit/lib/
 kit/node_modules/
 kit/package-lock.json
+.secret.local

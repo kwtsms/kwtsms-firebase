@@ -4,7 +4,7 @@ kwtSMS function kit for Firebase (Cloud Functions 2nd gen). Send SMS from a Fire
 
 This kit replaces the **kwtSMS Firebase Extension**. Firebase Extensions shut down on 2027-03-31; function kits on npm are Google's replacement.
 
-Test mode is the default: `test=1`, nothing is delivered and no credits are used until you switch it off in the `sms_config/settings` Firestore document (`test_mode: false`).
+Test mode is the default: `test=1`. Test messages are not delivered; their credits are held until you delete them from the Sending Queue. Switch it off in the `sms_config/settings` Firestore document (`test_mode: false`) to deliver for real.
 
 ## Install
 
@@ -87,7 +87,7 @@ firebase functions:lifecycle:run afterRedeploy <CODEBASE_NAME>
 
 ## Billing
 
-Blaze plan required (2nd gen functions, Secret Manager, Cloud Scheduler, Cloud Tasks, Firestore usage). SMS credits are billed by kwtSMS, not Google; test mode uses none.
+Blaze plan required (2nd gen functions, Secret Manager, Cloud Scheduler, Cloud Tasks, Firestore usage). SMS credits are billed by kwtSMS, not Google; test messages are not delivered, but their credits are held until you delete them from the Sending Queue.
 
 ## Instance ID and names
 

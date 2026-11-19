@@ -8,6 +8,8 @@
   Send SMS notifications, OTP codes, and alerts from Firebase using the <a href="https://www.kwtsms.com">kwtSMS</a> gateway.
 </p>
 
+<p align="center">All kwtSMS integrations: <a href="https://www.kwtsms.com/integrations/">kwtsms.com/integrations</a></p>
+
 <p align="center">
   <a href="https://github.com/kwtsms/kwtsms-firebase/releases"><img src="https://img.shields.io/github/v/release/kwtsms/kwtsms-firebase?label=version&color=FFA200" alt="Version"></a>
   <a href="https://github.com/kwtsms/kwtsms-firebase/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License"></a>
